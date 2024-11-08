@@ -3,6 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { uiEntityEditor } from './entity_editor';
 import { uiPresetList } from './preset_list';
+import { uiViewOnOSM } from './view_on_osm';
 
 
 export function uiInspector(context) {
@@ -94,6 +95,18 @@ export function uiInspector(context) {
                 .call(entityEditor);
         }
 
+        var footer = selection.selectAll('.footer')
+            .data([0]);
+
+        footer = footer.enter()
+            .append('div')
+            .attr('class', 'footer')
+            .merge(footer);
+
+        footer
+            .call(uiViewOnOSM(context)
+                .what(context.hasEntity(_entityIDs.length === 1 && _entityIDs[0]))
+            );
     }
 
     inspector.showList = function(presets) {
