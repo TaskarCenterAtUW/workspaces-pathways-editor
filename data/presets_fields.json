@@ -1,0 +1,29 @@
+{
+	"comment": {
+		"key": "comment",
+		"type": "textarea",
+		"usage": "changeset"
+	},
+	"source": {
+		"key": "source",
+		"type": "semiCombo",
+		"universal": true,
+		"snake_case": false,
+		"caseSensitive": true,
+		"autoSuggestions": false,
+		"options": [
+				"survey",
+				"local knowledge",
+				"aerial imagery",
+				"gps",
+				"streetlevel imagery",
+				"osm notes"
+		]
+	},
+	"hashtags": {
+		"key": "hashtags",
+		"type": "semiCombo",
+		"usage": "changeset",
+		"caseSensitive": true
+	}
+}

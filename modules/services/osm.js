@@ -542,6 +542,7 @@ function wrapcb(thisArg, callback, cid) {
 
 
 export default {
+    oauthClient: oauth,
 
     init: function() {
         utilRebind(this, dispatch, 'on');
