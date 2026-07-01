@@ -1,0 +1,50 @@
+name: Release to Azure Blob Storage
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Environment to deploy to'
+                required: true
+                default: 'develop'
+                type: choice
+                options:
+                    - develop
+                    - staging
+                    - production
+                    - testing
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.event.inputs.environment }}
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '20'
+            - name: Install dependencies
+              run: npm install
+            - name: Run build script
+              run: npm run all
+            # The dist folder contains the built files that need to be deployed to Azure Blob Storage
+            - name: Set the target folder based on the environment
+              run: |
+                  if [ "${{ github.event.inputs.environment }}" = "develop" ]; then
+                      echo "TARGET_FOLDER=dev" >> $GITHUB_ENV
+                  elif [ "${{ github.event.inputs.environment }}" = "staging" ]; then
+                      echo "TARGET_FOLDER=stage" >> $GITHUB_ENV
+                  elif [ "${{ github.event.inputs.environment }}" = "production" ]; then
+                      echo "TARGET_FOLDER=prod" >> $GITHUB_ENV
+                  else
+                      echo "TARGET_FOLDER=test" >> $GITHUB_ENV
+                  fi
+            - name: Upload to Azure Blob Storage
+              uses: LanceMcCarthy/Action-AzureBlobUpload@v3
+              with:
+                source_folder: 'dist'
+                connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+                container_name: 'idEditor'  
+                destination_folder: ${{ env.TARGET_FOLDER }}
+                delete_if_exists: true
