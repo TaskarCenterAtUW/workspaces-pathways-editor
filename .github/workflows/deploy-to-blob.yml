@@ -45,6 +45,6 @@ jobs:
               with:
                 source_folder: 'dist'
                 connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-                container_name: 'idEditor'  
+                container_name: 'ideditor'  
                 destination_folder: ${{ env.TARGET_FOLDER }}
                 delete_if_exists: true
