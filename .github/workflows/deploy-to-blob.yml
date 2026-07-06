@@ -77,6 +77,6 @@ jobs:
               with:
                 source_folder: 'build'
                 connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-                container_name: 'pathways-editor'
+                container_name: 'ideditor'
                 destination_folder: '${{ env.TARGET_CONTAINER }}'
                 delete_if_exists: true
